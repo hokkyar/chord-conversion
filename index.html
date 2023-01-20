@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Chord Conversion</title>
+  <title>Simple Chord Conversion</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
@@ -17,6 +17,12 @@
       padding: 1rem;
       border: 1px solid #eee;
     }
+
+    @media(width <=600px) {
+      table {
+        font-size: 1.2rem;
+      }
+    }
   </style>
 </head>
 
@@ -24,12 +30,13 @@
 
   <nav class="navbar bg-light">
     <div class="container text-center d-flex justify-content-center p-2">
-      <span class="navbar-brand mb-0 fs-4">Chord Conversion</span>
+      <span class="navbar-brand mb-0 fs-4">Simple Chord Conversion</span>
     </div>
   </nav>
 
-  <div class="container my-5" style="height: 50vh;">
-    <div class="row d-flex justify-content-center gap-5 align-items-center flex-wrap flex-column">
+  <div class="container my-5" style="height: 5vh;">
+
+    <div class="row d-flex justify-content-center gap-5 align-items-center flex-wrap flex-column mx-5">
 
       <select id="inputUser" class="form-select" aria-label="Default select example">
         <option value="c">C</option>
@@ -55,6 +62,7 @@
       </table>
 
     </div>
+
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -62,7 +70,64 @@
     crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"
     integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-  <script src="index.js"></script>
+
+  <script>
+    const chords = ['c', 'd', 'e', 'f', 'g', 'a', 'b']
+    let temp
+
+    $('#inputUser').on('change', function () {
+      inputUser = this.value
+      const newChords = getChords(inputUser)
+      renderDisplay(newChords)
+    })
+
+    function getChords(input) {
+      const hasil = [...chords]
+      hasil.forEach((chord, i) => {
+        if (input === chord) temp = hasil.splice(0, i)
+      })
+      temp.forEach(t => hasil.push(t))
+      return hasil
+    }
+
+    function renderDisplay(newChords) {
+
+      switch (newChords[0]) {
+        case 'd':
+          newChords[2] += '#'
+          break
+        case 'e':
+          newChords[5] += '#'
+          newChords[1] += '#'
+          newChords[2] += '#'
+          break
+        case 'f':
+          newChords[3] = 'a#'
+          break
+        case 'a':
+          newChords[5] += '#'
+          newChords[2] += '#'
+          break
+        case 'b':
+          newChords[5] += '#'
+          newChords[1] += '#'
+          newChords[4] = 'f#'
+          newChords[2] += '#'
+          break
+      }
+
+      $('.mayor-1').html(newChords[0].toUpperCase())
+      $('.mayor-2').html(newChords[3].toUpperCase())
+      $('.mayor-3').html(newChords[4].toUpperCase())
+
+      $('.minor-1').html(newChords[5].toUpperCase() + 'm')
+      $('.minor-2').html(newChords[1].toUpperCase() + 'm')
+      $('.minor-3').html(newChords[2].toUpperCase() + 'm')
+
+    }
+
+
+  </script>
 </body>
 
 </html>
